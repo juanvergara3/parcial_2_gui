@@ -22,6 +22,13 @@ Shot::~Shot() {
 
 }
 
+QRectF Shot::boundingRect() const {
+    return QRectF(-1*10, -1*10, 20, 20);
+}
+void Shot::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+    painter->setBrush(Qt::black);
+    painter->drawEllipse(boundingRect());
+}
 
 void Shot::setX(float value) {
     x = value;
@@ -39,7 +46,6 @@ void Shot::setF_time(int value) {
 void Shot::setV0(int value) {
     V0 = value;
 }
-
 
 float Shot::getX() const {
     return x;

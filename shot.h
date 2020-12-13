@@ -2,8 +2,13 @@
 #define SHOT_H
 
 #include <QObject>
+#include <QPainter>
+#include <QGraphicsItem>
+#include <QGraphicsScene>
+#include <time.h>
+#include <stdlib.h>
 
-class Shot : public QObject {
+class Shot : public QObject, public QGraphicsItem  {
     Q_OBJECT
 
 public: //variables
@@ -20,6 +25,9 @@ public: //methods
     Shot();
     explicit Shot(QObject *parent = nullptr);
     ~Shot();
+
+    QRectF boundingRect() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr);
 
     int getAngle() const;
     int getV0() const;

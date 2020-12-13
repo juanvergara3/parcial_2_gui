@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1211</width>
-    <height>793</height>
+    <width>1020</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,21 +19,28 @@
      <rect>
       <x>9</x>
       <y>9</y>
-      <width>921</width>
-      <height>641</height>
+      <width>1000</width>
+      <height>600</height>
      </rect>
     </property>
    </widget>
    <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>931</x>
-      <y>9</y>
-      <width>271</width>
-      <height>641</height>
+      <x>390</x>
+      <y>620</y>
+      <width>601</width>
+      <height>131</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout_5">
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="res_3">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
      <item>
       <widget class="QLabel" name="res_1">
        <property name="text">
@@ -48,27 +55,20 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QLabel" name="res_3">
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </widget>
    <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>9</x>
-      <y>663</y>
-      <width>921</width>
-      <height>79</height>
+      <x>20</x>
+      <y>630</y>
+      <width>351</width>
+      <height>81</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
+      <layout class="QVBoxLayout" name="verticalLayout_10">
        <item>
         <widget class="QLabel" name="DefCan_label">
          <property name="text">
@@ -77,15 +77,55 @@
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="DefCan_x"/>
-       </item>
-       <item>
-        <widget class="QSpinBox" name="DefCan_y"/>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_8">
+           <item>
+            <widget class="QLabel" name="label">
+             <property name="text">
+              <string>X</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="label_2">
+             <property name="text">
+              <string>y</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_9">
+           <item>
+            <widget class="QSpinBox" name="DefCan_x">
+             <property name="maximum">
+              <number>1000</number>
+             </property>
+             <property name="value">
+              <number>800</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="DefCan_y">
+             <property name="maximum">
+              <number>600</number>
+             </property>
+             <property name="value">
+              <number>50</number>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
        </item>
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
+      <layout class="QVBoxLayout" name="verticalLayout_7">
        <item>
         <widget class="QLabel" name="Off_Shot_label">
          <property name="text">
@@ -94,15 +134,41 @@
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="Off_Shot_v"/>
-       </item>
-       <item>
-        <widget class="QSpinBox" name="Off_Shot_a"/>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_5">
+           <item>
+            <widget class="QLabel" name="Off_v_label">
+             <property name="text">
+              <string>V_0</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="Off_a_label">
+             <property name="text">
+              <string>Angle</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <item>
+            <widget class="QSpinBox" name="Off_Shot_v"/>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="Off_Shot_a"/>
+           </item>
+          </layout>
+         </item>
+        </layout>
        </item>
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
+      <layout class="QVBoxLayout" name="verticalLayout_4">
        <item>
         <widget class="QLabel" name="Def_Shot_label">
          <property name="text">
@@ -111,15 +177,41 @@
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="Def_Shot_v"/>
-       </item>
-       <item>
-        <widget class="QSpinBox" name="Def_Shot_a"/>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QLabel" name="Def_v_label">
+             <property name="text">
+              <string>V_0</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="Def_a_label">
+             <property name="text">
+              <string>Angle</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_3">
+           <item>
+            <widget class="QSpinBox" name="Def_Shot_v"/>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="Def_Shot_a"/>
+           </item>
+          </layout>
+         </item>
+        </layout>
        </item>
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_4">
+      <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QPushButton" name="Start_button">
          <property name="text">
@@ -151,7 +243,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1211</width>
+     <width>1020</width>
      <height>20</height>
     </rect>
    </property>

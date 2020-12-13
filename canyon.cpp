@@ -6,7 +6,7 @@ Canyon::Canyon(float x_, float y_, float imp_) {
     impact_multpliter = imp_;
 }
 
-std::vector<Shot *> Canyon::generate_offensive_shots(Canyon target, bool print) {
+std::vector<Shot *> Canyon::generate_offensive_shots(Canyon *target, bool print) {
     setDistance(target);
     setImpact_radio(); //calcula la distancia al objetivo y en base a eso el radio de impacto
 
@@ -23,11 +23,11 @@ std::vector<Shot *> Canyon::generate_offensive_shots(Canyon target, bool print) 
 
         for(angle = 1; angle < 90; angle++){ // se aumenta el  angulo de 1 en 1 hasta que sea 90
 
-            if(posx < target.getPosx()){ //si el cañon esta ubicado antes del objetivo
+            if(posx < target->getPosx()){ //si el cañon esta ubicado antes del objetivo
                 Vx = V0*cos(angle*pi/180);
                 Vy = V0*sin(angle*pi/180);
             }
-            else if (posx > target.getPosx()){ //si el cañon esta ubicado despues del objetivo
+            else if (posx > target->getPosx()){ //si el cañon esta ubicado despues del objetivo
                 Vx = V0*cos((angle+90)*pi/180);
                 Vy = V0*sin((angle+90)*pi/180);
             }
@@ -40,7 +40,7 @@ std::vector<Shot *> Canyon::generate_offensive_shots(Canyon target, bool print) 
                 x = posx + Vx*t;
                 y = posy + Vy*t -(0.5*G*t*t);
 
-                if(sqrt(pow((target.getPosx() - x),2)+pow((target.getPosy() - y),2)) < impact_radio){ //si la distancia entre el proytectil y el destino es menos que el radio de impacto se cuenta como exitoso
+                if(sqrt(pow((target->getPosx() - x),2)+pow((target->getPosy() - y),2)) < impact_radio){ //si la distancia entre el proytectil y el destino es menos que el radio de impacto se cuenta como exitoso
 
                     if(y<0) //es posible que impacte habiendo pasado un poco del suelo (como si se enterrara, pero me parece mejor que se registre como si hubiera impactado en 0)
                         y = 0;
@@ -67,7 +67,7 @@ std::vector<Shot *> Canyon::generate_offensive_shots(Canyon target, bool print) 
         print_results(aux);
     return aux;
 }
-std::vector<Shot *> Canyon::generate_defensive_shots(Canyon origin, Shot target, bool offensive_matters, bool print) {
+std::vector<Shot *> Canyon::generate_defensive_shots(Canyon *origin, Shot target, bool offensive_matters, bool print) {
 
     std::vector<Shot *> shots; //para retornar
 
@@ -105,13 +105,13 @@ std::vector<Shot *> Canyon::generate_defensive_shots(Canyon origin, Shot target,
 
                 for(t = 0; ; t++){// se aumenta el tiempo de segundo en segundo
 
-                    x_offensive = origin.getPosx() + Vx_offensive*(t+2);
-                    y_offensive = origin.getPosy() + Vy_offensive*(t+2) -(0.5*G*(t+2)*(t+2)); //note que se tienen en cuenta los 2 segundos que tardo la informacion en llegar
+                    x_offensive = origin->getPosx() + Vx_offensive*(t+2);
+                    y_offensive = origin->getPosy() + Vy_offensive*(t+2) -(0.5*G*(t+2)*(t+2)); //note que se tienen en cuenta los 2 segundos que tardo la informacion en llegar
 
                     x = posx + Vx*t;
                     y = posy + Vy*t -(0.5*G*t*t);
 
-                    if(sqrt(pow((x_offensive - x), 2)+pow((y_offensive - y), 2)) < impact_radio && sqrt(pow((origin.getPosx() - x), 2)+pow((origin.getPosy() - y), 2)) > impact_radio){
+                    if(sqrt(pow((x_offensive - x), 2)+pow((y_offensive - y), 2)) < impact_radio && sqrt(pow((origin->getPosx() - x), 2)+pow((origin->getPosy() - y), 2)) > impact_radio){
                         //si la distancia entre el proytectil y el destino es menos que el radio de impacto Y la distanciancia entre el proyectil y el origen es mayor que el radio de impacto se cuenta como exitoso
 
                         if(y<0)
@@ -207,15 +207,15 @@ std::vector<Shot *> Canyon::generate_defensive_shots(Canyon origin, Shot target,
         print_results(shots);
     return shots;
 }
-std::vector<Shot *> Canyon::generate_counter_offensive_shots(Canyon defensive_canyon, Shot defensive_shot, Shot offensive_shot) {
+std::vector<Shot *> Canyon::generate_counter_offensive_shots(Canyon *defensive_canyon, Shot defensive_shot, Shot offensive_shot) {
 
     std::vector<Shot *> shots; //para retornar
 
     //calcula la distancia entre los cañones, y en base a eso el radio de impacto
     setDistance(defensive_canyon);
-    defensive_canyon.setDistance(*this);
+    defensive_canyon->setDistance(this);
     setImpact_radio();
-    defensive_canyon.setImpact_radio();
+    defensive_canyon->setImpact_radio();
 
     int flag = 0;//para romper los ciclos cuando haye los 3 disparos
 
@@ -259,8 +259,8 @@ std::vector<Shot *> Canyon::generate_counter_offensive_shots(Canyon defensive_ca
                 x_offensive = posx + Vx_offensive*(t+d1);
                 y_offensive = posy + Vy_offensive*(t+d1) - (0.5*G*(t+d1)*(t+d1));  // *** no estoy seguro de los delays ***
 
-                x_defensive = defensive_canyon.getPosx() + Vx_defensive*(t+d2);
-                y_defensive = defensive_canyon.getPosy() + Vy_defensive*(t+d2) - (0.5*G*(t+d2)*(t+d2));
+                x_defensive = defensive_canyon->getPosx() + Vx_defensive*(t+d2);
+                y_defensive = defensive_canyon->getPosy() + Vy_defensive*(t+d2) - (0.5*G*(t+d2)*(t+d2));
 
                 x = posx + Vx*t;
                 y = posy + Vy*t - (0.5*G*t*t);
@@ -275,7 +275,7 @@ std::vector<Shot *> Canyon::generate_counter_offensive_shots(Canyon defensive_ca
                     break;
                 }
 
-                if(sqrt(pow((x_offensive - x_defensive), 2)+pow((y_offensive - y_defensive), 2)) < defensive_canyon.impact_radio) break; //si el proyectil defensivo impacta con el ofensivo
+                if(sqrt(pow((x_offensive - x_defensive), 2)+pow((y_offensive - y_defensive), 2)) < defensive_canyon->impact_radio) break; //si el proyectil defensivo impacta con el ofensivo
 
                 if(flag == 3) break;
 
@@ -294,7 +294,7 @@ std::vector<Shot *> Canyon::generate_counter_offensive_shots(Canyon defensive_ca
     return shots;
 }
 
-bool Canyon::confirm_impact(Canyon origin, Shot ofense) {
+bool Canyon::confirm_impact(Canyon *origin, Shot ofense) {
 
     float x, y; //posicion del proyectil
     float Vx = 0, Vy = 0; //velocidades en x y y del proyectil
@@ -313,24 +313,24 @@ bool Canyon::confirm_impact(Canyon origin, Shot ofense) {
     Vx = V0*cos(ofense.getAngle()*pi/180);
     Vy = V0*sin(ofense.getAngle()*pi/180);
 
-    origin.setDistance(*this);
-    origin.setImpact_radio(); //calcula la distancia entre los cañones, y en base a eso el radio de impacto
+    origin->setDistance(this);
+    origin->setImpact_radio(); //calcula la distancia entre los cañones, y en base a eso el radio de impacto
 
     for(t = 0; ; t++){ // se aumenta el tiempo de segundo en segundo
 
-        x = origin.getPosx() + Vx*t;
-        y = origin.getPosy() + Vy*t -(0.5*G*t*t);
+        x = origin->getPosx() + Vx*t;
+        y = origin->getPosy() + Vy*t -(0.5*G*t*t);
 
-        if(sqrt(pow((posx - x), 2)+pow((posy - y), 2)) < origin.getImpact_radio()) //si la distancia entre el proytectil y el destino es menos que el radio de impacto se cuenta como un impacto
+        if(sqrt(pow((posx - x), 2)+pow((posy - y), 2)) < origin->getImpact_radio()) //si la distancia entre el proytectil y el destino es menos que el radio de impacto se cuenta como un impacto
             return true;
 
-        if(y < -1*(origin.getImpact_radio()*2))
+        if(y < -1*(origin->getImpact_radio()*2))
             break;
 
     }
     return false;
 }
-bool Canyon::confirm_impact(Canyon ofensive, Shot of, Canyon defensive, Shot def) {
+bool Canyon::confirm_impact(Canyon *ofensive, Shot of, Canyon *defensive, Shot def) {
 
     float x_defensive, y_defensive; //coordenas del disparo defensivo
     float Vx_defensive, Vy_defensive; //velocidades en x y y del disparo defensivo
@@ -344,24 +344,24 @@ bool Canyon::confirm_impact(Canyon ofensive, Shot of, Canyon defensive, Shot def
     Vx_offensive = of.getV0()*cos((of.getAngle())*pi/180);
     Vy_offensive = of.getV0()*sin((of.getAngle())*pi/180);
 
-    ofensive.setDistance(defensive);
-    ofensive.setImpact_radio();
-    defensive.setDistance(ofensive);
-    defensive.setImpact_radio();
+    ofensive->setDistance(defensive);
+    ofensive->setImpact_radio();
+    defensive->setDistance(ofensive);
+    defensive->setImpact_radio();
 
     for(int t = 0; ; t++){// se aumenta el tiempo de segundo en segundo
 
-        x_offensive = ofensive.getPosx() + Vx_offensive*(t+2);
-        y_offensive = ofensive.getPosy() + Vy_offensive*(t+2) -(0.5*G*(t+2)*(t+2)); //note que se tienen en cuenta los 2 segundos que tardo la informacion en llegar
+        x_offensive = ofensive->getPosx() + Vx_offensive*(t+2);
+        y_offensive = ofensive->getPosy() + Vy_offensive*(t+2) -(0.5*G*(t+2)*(t+2)); //note que se tienen en cuenta los 2 segundos que tardo la informacion en llegar
 
-        x_defensive = defensive.getPosx() + Vx_defensive*t;
-        y_defensive = defensive.getPosy() + Vy_defensive*t -(0.5*G*t*t);
+        x_defensive = defensive->getPosx() + Vx_defensive*t;
+        y_defensive = defensive->getPosy() + Vy_defensive*t -(0.5*G*t*t);
 
-        if(sqrt(pow((x_offensive - x_defensive), 2)+pow((y_offensive - y_defensive), 2)) < defensive.getImpact_radio()) //si la distancia entre el proytectil y el destino es menos que el radio de impacto se cuenta como exitoso
+        if(sqrt(pow((x_offensive - x_defensive), 2)+pow((y_offensive - y_defensive), 2)) < defensive->getImpact_radio()) //si la distancia entre el proytectil y el destino es menos que el radio de impacto se cuenta como exitoso
             return true;
 
 
-        if(y_defensive < -1*(defensive.getImpact_radio()*2) || y_offensive < -1*(ofensive.getImpact_radio()*2)) break; // si se pasa del suelo
+        if(y_defensive < -1*(defensive->getImpact_radio()*2) || y_offensive < -1*(ofensive->getImpact_radio()*2)) break; // si se pasa del suelo
 
     }
 
@@ -400,8 +400,8 @@ float Canyon::getPosy() const {
 float Canyon::getDistance() const {
     return distance;
 }
-void Canyon::setDistance(Canyon destiny) {
-    distance = abs(posx - destiny.getPosx()); //calcula la distancia entre los 2 cañones
+void Canyon::setDistance(Canyon *destiny) {
+    distance = abs(posx - destiny->getPosx()); //calcula la distancia entre los 2 cañones
 }
 void Canyon::setDistance(float dis) {
     distance = dis;
@@ -412,4 +412,12 @@ float Canyon::getImpact_radio() const {
 }
 void Canyon::setImpact_radio() {
     impact_radio = impact_multpliter*distance;
+}
+
+QRectF Canyon::boundingRect() const {
+    return QRectF(-20, -20, 40, 40);
+}
+void Canyon::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) {
+    painter->setBrush(Qt::blue);
+    painter->drawRect(boundingRect());
 }
